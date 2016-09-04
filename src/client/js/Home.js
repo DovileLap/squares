@@ -1,5 +1,5 @@
 import React from 'react';
-import Points from './Points.js';
+import Points from './Points';
 
 const pointsJson= [{ x:10, y:20},
 			 { x:0, y:-5},

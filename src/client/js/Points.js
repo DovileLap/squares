@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap'
 import PointTable from './PointTable'
-import ClearPoints from './ClearPoints'
 
 import { validateCoord } from './validators'
 
@@ -98,16 +97,19 @@ class Points extends React.Component {
 	}
 
 	clearAll() {
+		this.points = [];
 		this.setState({
-			points: []
+			points: this.points
 		});
 	}
 
 	render() {
 		return (
 			<div>
-				<Button bsTyle="primary" 
-				        onClick={ this.clearAll.bind(this) } />
+				<Button bsStyle="primary"   
+				        onClick={ this.clearAll.bind(this) } > 
+				    Clear all Points
+				</Button>
 				<PointTable onDeleteRow={this.deleteById.bind(this)} 
 							onAddRow={this.addPoint.bind(this)} 
 							{ ...this.state } />

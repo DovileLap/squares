@@ -35,6 +35,12 @@ class PointTable extends React.Component {
 		};
 	}
 
+	componentWillReceiveProps(props){
+	    this.setState({
+	    	points: props.points
+	   	});
+	}
+
 	onPageChange(page, sizePerPage) {
 		const currentIndex = (page - 1) * sizePerPage;
 	    this.setState({
@@ -87,21 +93,21 @@ class PointTable extends React.Component {
 		return (
 			<BootstrapTable 
 				data={this.state.points} 
-				remote={true}
+				remote 
 				selectRow={ { mode: 'checkbox' } }
-				keyField={'id'} 
-				striped={true} 
-				hover={true} 
-				pagination={true} 
-				insertRow={true} 
-				deleteRow={true} 
-				exportCSV={true} 
-				csvFileName={'points.txt'}
+				keyField="id" 
+				striped  
+				hover 
+				pagination 
+				insertRow 
+				deleteRow 
+				exportCSV 
+				csvFileName="points.txt" 
 				options={options} 
 				fetchInfo={ { dataTotalSize: this.props.points.length } }
 				handleConfirmDeleteRow={ (next) => { next(); } }>
-		      <TableHeaderColumn dataField="x" dataSort={true} editable={ {validator: pointValidator} }>X</TableHeaderColumn>
-		      <TableHeaderColumn dataField="y" dataSort={true} editable={ {validator: pointValidator} }>Y</TableHeaderColumn>
+		      <TableHeaderColumn dataField="x" dataSort editable={ {validator: pointValidator} }>X</TableHeaderColumn>
+		      <TableHeaderColumn dataField="y" dataSort editable={ {validator: pointValidator} }>Y</TableHeaderColumn>
 		    </BootstrapTable>
 		)
 	}
