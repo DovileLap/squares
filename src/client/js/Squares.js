@@ -75,4 +75,8 @@ class Squares extends React.Component {
 	}
 }
 
+Squares.defaultProps = {
+    points: []
+};
+
 module.exports = Squares;

@@ -117,4 +117,8 @@ class PointTable extends React.Component {
 	}
 }
 
+PointTable.defaultProps = {
+    points: []
+};
+
 module.exports = PointTable;

@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap'
 import PointTable from './PointTable'
 import PointsImport from './PointsImport'
 import Squares from './Squares'
+import SaveForm from './SaveForm'
 
 import { validateCoord } from './validators'
 
@@ -10,14 +11,34 @@ class Points extends React.Component {
 	constructor(props) {
 		super(props);
 		this.nextId = 0;
-		this.points = []
+		this.points = [];
 		props.points.map(function(point){
 			this._addPoint(point);
 		}, this);
 		this.state = {
-			points: this.points
+			points: this.points,
+			name: ''
 		};
 
+	}
+
+	save(name, callback) {
+		let self = this;
+		this.setState({ name: name })
+		setTimeout(function() {
+			window.localStorage.setItem('points-'+name, JSON.stringify(self.state.points));
+			if (callback) {
+				callback();
+			}
+		}, 3000);
+	}
+
+	load() {
+		let points = window.localStorage.getItem('points-'+this.state.name);
+		points = JSON.parse(points);
+		this.setState({
+			points: points
+		});
 	}
 
 	newPoint(x, y) {
@@ -126,6 +147,7 @@ class Points extends React.Component {
 					</Button>
 					<PointsImport addPoints={ this.addPoints.bind(this) }
 							  validator={ this.validatePoint.bind(this) }  />
+					<SaveForm onSave={ this.save.bind(this) } />
 				</div>
 				<PointTable onDeleteRow={this.deleteById.bind(this)} 
 							onAddRow={this.addPoint.bind(this)} 
@@ -134,6 +156,10 @@ class Points extends React.Component {
 			</div>
 		);
 	}
+};
+
+Points.defaultProps = {
+    points: []
 };
 
 module.exports = Points;

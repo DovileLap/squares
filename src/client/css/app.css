@@ -25,3 +25,13 @@ body .react-spinner_bar {
 	width: 36px;
 	height: 36px;
 }
+
+.points-save-form {
+	float: right;
+	margin-right: 10px;
+}
+
+.points-save-form input{
+	margin-left: 10px;
+	margin-right: 10px;
+}
