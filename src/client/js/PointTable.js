@@ -28,6 +28,7 @@ class PointTable extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.points = props.points;
 		this.state = {
 			points: props.points,
 			currentPage: 1,
@@ -36,15 +37,17 @@ class PointTable extends React.Component {
 	}
 
 	componentWillReceiveProps(props){
+		this.points = props.points;
 	    this.setState({
 	    	points: props.points
 	   	});
+	   	this.resetPage();
 	}
 
 	onPageChange(page, sizePerPage) {
 		const currentIndex = (page - 1) * sizePerPage;
 	    this.setState({
-	      points: this.props.points.slice(currentIndex, currentIndex + sizePerPage),
+	      points: this.points.slice(currentIndex, currentIndex + sizePerPage),
 	      currentPage: page
 	    });
 	}
@@ -52,7 +55,7 @@ class PointTable extends React.Component {
 	onSizePerPageList(sizePerPage) {
 	    const currentIndex = (this.state.currentPage - 1) * sizePerPage;
 	    this.setState({
-	      points: this.props.points.slice(currentIndex, currentIndex + sizePerPage),
+	      points: this.points.slice(currentIndex, currentIndex + sizePerPage),
 	      sizePerPage: sizePerPage
 	    });
 	  }
@@ -60,7 +63,7 @@ class PointTable extends React.Component {
 	resetPage() {
 		const currentIndex = (this.state.currentPage - 1) * this.state.sizePerPage;
 	    this.setState({
-	      points: this.props.points.slice(currentIndex, currentIndex + this.state.sizePerPage)
+	      points: this.points.slice(currentIndex, currentIndex + this.state.sizePerPage)
 	    });
 	}
 
@@ -88,7 +91,8 @@ class PointTable extends React.Component {
 			onDeleteRow: this.onDeleteRow.bind(this),
 			onAddRow: this.onAddRow.bind(this),
 			onPageChange: this.onPageChange.bind(this),
-			onSizePerPageList: this.onSizePerPageList.bind(this)
+			onSizePerPageList: this.onSizePerPageList.bind(this),
+			paginationShowsTotal: true
 		}
 		return (
 			<BootstrapTable 
@@ -104,7 +108,7 @@ class PointTable extends React.Component {
 				exportCSV 
 				csvFileName="points.txt" 
 				options={options} 
-				fetchInfo={ { dataTotalSize: this.props.points.length } }
+				fetchInfo={ { dataTotalSize: this.points.length } }
 				handleConfirmDeleteRow={ (next) => { next(); } }>
 		      <TableHeaderColumn dataField="x" dataSort editable={ {validator: pointValidator} }>X</TableHeaderColumn>
 		      <TableHeaderColumn dataField="y" dataSort editable={ {validator: pointValidator} }>Y</TableHeaderColumn>

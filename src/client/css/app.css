@@ -1,0 +1,27 @@
+body .react-spinner_bar {
+	background-color: black;
+}
+
+.clear-button {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.points-import-form {
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.points-import-form > div{
+	display: inline-block;
+}
+
+
+.points-import-spinner {
+	display: inline-block;
+	margin-left: 5px;
+	margin-bottom: -12px;
+	width: 36px;
+	height: 36px;
+}

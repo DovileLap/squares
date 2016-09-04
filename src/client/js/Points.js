@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap'
 import PointTable from './PointTable'
+import PointsImport from './PointsImport'
+import Squares from './Squares'
 
 import { validateCoord } from './validators'
 
@@ -21,15 +23,14 @@ class Points extends React.Component {
 	newPoint(x, y) {
 		let newPoint = { 
 			  id: this.nextId,
-			  x: x,
-			  y: y
+			  x: parseInt(x),
+			  y: parseInt(y)
 		};
 		this.nextId++;
 		return newPoint;
 	}
 
 	_addPoint(point) {
-		console.log('adding new point');
 		const validation = this.validatePoint(point);
 		if (validation.valid) {
 			this.points.push(this.newPoint(point.x, point.y));
@@ -45,6 +46,15 @@ class Points extends React.Component {
 		})
 	}
 
+	addPoints(points) {
+		points.map(function(point){
+			this._addPoint(point);
+		}, this);
+		this.setState({
+			points: this.points
+		});
+	}
+
 	validatePoint(point) {
 		let resp = { valid: true, msg: ''};
 		if (!point.hasOwnProperty('x') || !point.hasOwnProperty('y')) {
@@ -54,10 +64,12 @@ class Points extends React.Component {
 			resp.valid = false;
 			resp.msg = 'Coordinates have to be integers between -5000 and 5000.'
 		}
+		let intPoint = {x: parseInt(point.x),
+						y: parseInt(point.y)};
 		if (this.points.length > 10000) {
 			resp.valid = false;
 			resp.msg = 'Too many points.';
-		} else if (this.pointExists(point)) {
+		} else if (this.pointExists(intPoint)) {
 			resp.valid = false;
 			resp.msg = 'This point already exists.';
 		}
@@ -106,13 +118,19 @@ class Points extends React.Component {
 	render() {
 		return (
 			<div>
-				<Button bsStyle="primary"   
-				        onClick={ this.clearAll.bind(this) } > 
-				    Clear all Points
-				</Button>
+				<div class="toolbar">
+					<Button class="clear-button" 
+							bsStyle="primary"   
+					        onClick={ this.clearAll.bind(this) } > 
+					    Clear all Points
+					</Button>
+					<PointsImport addPoints={ this.addPoints.bind(this) }
+							  validator={ this.validatePoint.bind(this) }  />
+				</div>
 				<PointTable onDeleteRow={this.deleteById.bind(this)} 
 							onAddRow={this.addPoint.bind(this)} 
 							{ ...this.state } />
+				<Squares { ...this.state }/>
 			</div>
 		);
 	}
