@@ -1,5 +1,9 @@
 import React from 'react';
-import { Button } from 'react-bootstrap'
+import ReactDOM from 'react-dom';
+import { Button } from 'react-bootstrap';
+import $ from 'jquery';
+
+import SetDialog from './SetDialog';
 
 class SaveForm extends React.Component {
 
@@ -8,12 +12,41 @@ class SaveForm extends React.Component {
 		this.state = {
 			name: '',
 			disabled: false,
-			btnLabel: 'Save'
+			btnLabel: 'Save',
+			sets: ['A', 'B', 'C'] 
 		}
 	}
 
 	handleNameChange(e) {
-		this.setState({ name: e.target.value })
+		if (e.target.value == "add_new_set") {
+			this.dialog.open();
+		} else {
+			this.setState({ name: e.target.value })
+		}	
+	}
+
+	validateNewName(name) {
+		if (this.state.sets.indexOf(name) >= 0) {
+			return {
+				valid: false,
+				message: 'This name is already taken.'
+			}
+		}
+		return {
+			valid: true,
+			message: ''
+		}
+	}
+
+	createNewName(name) {
+		if (this.validateNewName(name).valid) {
+			let sets = this.state.sets;
+			sets.push(name);
+			this.setState({
+				sets: sets,
+				name: name
+			});
+		}
 	}
 
 	handleSubmit(e) {
@@ -34,18 +67,43 @@ class SaveForm extends React.Component {
 	}
 
 	render() {
+		let options = this.state.sets.map(function(opt) {
+			return ( <option key={ opt } 
+							 value= { opt }> 
+							 { opt } 
+					 </option> );
+		}, this);
+		options.unshift( ( <option key=""></option>) );
+		options.push( ( <option key="add_new_set" value="add_new_set">New...</option> ) );
+
 		return (
-			<form class="points-save-form" onSubmit={ this.handleSubmit.bind(this) }>	
-				<input type="text" 
-						placeholder="List Name" 
-						value={ this.state.name } 
-						onChange={ this.handleNameChange.bind(this) } />
-				<Button class="save-button" 
-						disabled={this.state.disabled} 
-						bsStyle="primary" 
-						type="submit" > 
-				    { this.state.btnLabel }
-				</Button>
+			<form class="points-save-form form-inline" onSubmit={ this.handleSubmit.bind(this) }>
+				<select type="select" 
+						class="form-control"
+						value={ this.state.name }
+						onChange={ this.handleNameChange.bind(this) }>
+					{ options }
+				</select>	
+				<div class="btn-group">
+					<Button disabled={this.state.disabled} 
+							bsStyle="primary" 
+							type="submit" > 
+						<span class="glyphicon glyphicon-floppy-disk"></span>
+					    &nbsp;{ this.state.btnLabel }
+					</Button>
+					<Button bsStyle="success">
+						<i class="glyphicon glyphicon-download"></i>
+						&nbsp;Load
+					</Button>
+					<Button bsStyle="warning">
+						<i class="glyphicon glyphicon-trash"></i>
+						&nbsp;Delete
+					</Button>
+				</div>
+				<SetDialog id="set-dialog" 
+					validateName= { this.validateNewName.bind(this) } 
+					createNewName = { this.createNewName.bind(this) }
+					ref={ (dialog) => this.dialog = dialog } />
 			</form>
 		)
 	}

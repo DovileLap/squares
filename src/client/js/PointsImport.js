@@ -54,11 +54,11 @@ class PointsImport extends React.Component {
 
 	render(){
 		return (
-			<form class="points-import-form">
+			<form class="points-import-form form-inline">
 		        <FileInput name="pointsImport"
 		                   accept=".txt"
 		                   placeholder="Import Points"
-		                   className="inputClass"
+		                   className="form-control"
 		                   onChange={ this.handleChange.bind(this) } />
 		        <div style = { { display: this.state.loading? '': 'none' }} 
 		        	class="points-import-spinner">
