@@ -5,16 +5,23 @@ import $ from 'jquery';
 
 import SetDialog from './SetDialog';
 
-class SaveForm extends React.Component {
+class Sets extends React.Component {
 
 	constructor(props){
 		super(props);
 		this.state = {
 			name: '',
 			disabled: false,
-			btnLabel: 'Save',
-			sets: ['A', 'B', 'C'] 
+			saveBtnLabel: 'Save',
+			loadBtnLabel: 'Load',
+			deleteBtnLabel: 'Delete',
+			sets: [] 
 		}
+		this.loadSets();
+	}
+
+	loadSets() {
+		this.state.sets = [];
 	}
 
 	handleNameChange(e) {
@@ -55,14 +62,57 @@ class SaveForm extends React.Component {
 		console.log('saving...')
 		this.setState({
 			disabled: true,
-			btnLabel: 'Saving...'
+			saveBtnLabel: 'Saving...'
 		});
-		this.props.onSave(this.state.name, function(){
-			console.log('saved')
+		this.save(function() {
 			self.setState({
 				disabled: false,
-				btnLabel: 'Save'
+				saveBtnLabel: 'Save'
 			})
+		});
+	}
+
+	save(callback) {
+		let self = this;
+		setTimeout(function() {
+			window.localStorage.setItem('points-'+self.state.name, JSON.stringify(self.props.getPoints()));
+			self.props.onSaveSet(self.state.name);
+			if (callback) {
+				callback();
+			}
+		}, 3000);
+	}
+	
+	delete() {
+		this.setState({
+			disabled: true,
+			deleteBtnLabel: 'Deleting...'
+		});
+		window.localStorage.removeItem('points-'+this.state.name);
+		this.props.onDeleteSet(this.state.name);
+		let sets = this.state.sets;
+		sets.splice(sets.indexOf(this.state.name), 1);
+		this.setState({
+			name: '',
+			sets: sets
+		});
+		this.setState({
+			disabled: false,
+			deleteBtnLabel: 'Delete'
+		});
+	}
+
+	load() {
+		this.setState({
+			disabled: true,
+			loadBtnLabel: 'Loading...'
+		});
+		let points = window.localStorage.getItem('points-'+this.state.name);
+		points = JSON.parse(points);
+		this.props.onLoadSet(this.state.name, points);
+		this.setState({
+			disabled: false,
+			loadBtnLabel: 'Load'
 		});
 	}
 
@@ -89,15 +139,19 @@ class SaveForm extends React.Component {
 							bsStyle="primary" 
 							type="submit" > 
 						<span class="glyphicon glyphicon-floppy-disk"></span>
-					    &nbsp;{ this.state.btnLabel }
+					    &nbsp;{ this.state.saveBtnLabel }
 					</Button>
-					<Button bsStyle="success">
+					<Button bsStyle="success"
+							disabled={this.state.disabled}
+							onClick={ this.load.bind(this) }>
 						<i class="glyphicon glyphicon-download"></i>
-						&nbsp;Load
+						&nbsp;{ this.state.loadBtnLabel }
 					</Button>
-					<Button bsStyle="warning">
+					<Button bsStyle="warning"
+							disabled={this.state.disabled} 
+							onClick={ this.delete.bind(this) }>
 						<i class="glyphicon glyphicon-trash"></i>
-						&nbsp;Delete
+						&nbsp;{ this.state.deleteBtnLabel }
 					</Button>
 				</div>
 				<SetDialog id="set-dialog" 
@@ -109,4 +163,4 @@ class SaveForm extends React.Component {
 	}
 }
 
-module.exports = SaveForm;
+module.exports = Sets;

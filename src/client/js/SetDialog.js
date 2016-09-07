@@ -67,7 +67,7 @@ class SetDialog extends React.Component {
 		        <Button bsStyle="primary"
 		        		disabled={ this.state.name.length == 0 }
 		        		onClick= { this.save.bind(this) }> 
-		        	Save
+		        	Add
 		        </Button>
 		      </Modal.Footer>
 
