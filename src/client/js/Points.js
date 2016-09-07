@@ -3,7 +3,8 @@ import { Button } from 'react-bootstrap'
 import PointTable from './PointTable'
 import PointsImport from './PointsImport'
 import Squares from './Squares'
-import SaveForm from './SaveForm'
+import Sets from './Sets'
+
 
 import { validateCoord } from './validators'
 
@@ -22,23 +23,8 @@ class Points extends React.Component {
 
 	}
 
-	save(name, callback) {
-		let self = this;
-		this.setState({ name: name })
-		setTimeout(function() {
-			window.localStorage.setItem('points-'+name, JSON.stringify(self.state.points));
-			if (callback) {
-				callback();
-			}
-		}, 3000);
-	}
-
-	load() {
-		let points = window.localStorage.getItem('points-'+this.state.name);
-		points = JSON.parse(points);
-		this.setState({
-			points: points
-		});
+	getPoints() {
+		return this.state.points;
 	}
 
 	newPoint(x, y) {
@@ -136,23 +122,69 @@ class Points extends React.Component {
 		});
 	}
 
+	onDeleteSet(name) {
+		if (this.state.name == name) {
+			this.clearAll();
+			this.setState({
+				name: ''
+			});
+		}
+	}
+
+	onSaveSet(name) {
+		this.setState({
+			name: name
+		});
+	}
+
+	onLoadSet(name, points) {
+		this.setState({
+			name: name
+		});
+		this.clearAll();
+		this.addPoints(points);
+	}
+
 	render() {
+		let setname = "New set";
+		if (this.state.name) {
+			setname = "Set " + this.state.name;
+		}
 		return (
-			<div>
-				<div class="toolbar">
-					<Button class="clear-button" 
-							bsStyle="primary"   
-					        onClick={ this.clearAll.bind(this) } > 
-					    Clear all Points
-					</Button>
-					<PointsImport addPoints={ this.addPoints.bind(this) }
-							  validator={ this.validatePoint.bind(this) }  />
-					<SaveForm onSave={ this.save.bind(this) } />
+			<div class="main-container container-fluid">
+				<div class="toolbar row">
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<Button class="clear-button" 
+								bsStyle="primary"   
+						        onClick={ this.clearAll.bind(this) } > 
+						    Clear all Points
+						</Button>
+						<PointsImport addPoints={ this.addPoints.bind(this) }
+								  validator={ this.validatePoint.bind(this) }  />
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<Sets getPoints={ this.getPoints.bind(this) }
+							  onSaveSet={ this.onSaveSet.bind(this) }
+							  onDeleteSet={ this.onDeleteSet.bind(this) }
+							  onLoadSet={ this.onLoadSet.bind(this)}
+								/>
+					</div>
 				</div>
-				<PointTable onDeleteRow={this.deleteById.bind(this)} 
-							onAddRow={this.addPoint.bind(this)} 
-							{ ...this.state } />
-				<Squares { ...this.state }/>
+				<div class="row">
+					<div class="col-md-12 col-xs-12">
+						<h3>{ setname }</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-12">
+						<PointTable onDeleteRow={this.deleteById.bind(this)} 
+									onAddRow={this.addPoint.bind(this)} 
+									{ ...this.state } />
+					</div>
+					<div class="col-md-6 col-xs-12">
+						<Squares { ...this.state }/>
+					</div>
+				</div>
 			</div>
 		);
 	}

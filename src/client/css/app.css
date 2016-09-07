@@ -2,6 +2,11 @@ body .react-spinner_bar {
 	background-color: black;
 }
 
+.main-container {
+	margin-left:5px;
+	margin-right:5px;
+}
+
 .toolbar > form,
 .toolbar > form {
 	margin-top: 3px;
@@ -34,10 +39,27 @@ body .react-spinner_bar {
 
 .points-save-form {
 	float: right;
+}
+
+.points-save-form .form-control,
+.points-save-form .btn-group{
+	margin-left: 10px;
 	margin-right: 10px;
 }
 
-.points-save-form input{
-	margin-left: 10px;
-	margin-right: 10px;
+
+.points-viz-container {
+	border: solid 1px black;
+}
+
+.points-viz-container .square {
+	stroke: red;
+	stroke-width: 2px;
+	fill: none;
+}
+
+.points-viz-container .square.active {
+	stroke: black;
+	stroke-width: 4px;
+	z-index:5;
 }
