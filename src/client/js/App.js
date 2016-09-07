@@ -2,29 +2,25 @@ import React from 'react';
 import { render } from 'react-dom'
 import { Router, Route, Link, IndexRoute, hashHistory } from 'react-router'
 
-import Home from './Home.js';
+import Points from './Points.js';
 
-console.log('Hello World!');
+import '../css/app.css';
 
 
 var App = React.createClass({
   render: function() {
     return (
-      <div>
-        <h1>Tiles</h1>
-        <div className="content">
- 			{this.props.children}
-        </div>
-      </div>
+	    <div className="content">
+			{this.props.children}
+	    </div>
     )
   }
 });
 
-
 render(
 	<Router history={hashHistory}>
 	  <Route path="/" component={App}>
-	 	<IndexRoute component={Home}/>
+	 	<IndexRoute component={Points}/>
 	  </Route>
 	</Router>,
     document.getElementById('content')

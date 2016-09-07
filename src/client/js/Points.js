@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from 'react-bootstrap'
-import PointTable from './PointTable'
-import PointsImport from './PointsImport'
-import Squares from './Squares'
-import Sets from './Sets'
+import { Button, Grid, Row, Col } from 'react-bootstrap';
+import PointTable from './PointTable';
+import PointsImport from './PointsImport';
+import Squares from './Squares';
+import Sets from './Sets';
 
 
 import { validateCoord } from './validators'
@@ -151,9 +151,9 @@ class Points extends React.Component {
 			setname = "Set " + this.state.name;
 		}
 		return (
-			<div class="main-container container-fluid">
-				<div class="toolbar row">
-					<div class="col-md-6 col-sm-6 col-xs-12">
+			<Grid fluid class="main-container">
+				<Row class="toolbar">
+					<Col md={6} sm={6} xs={12}>
 						<Button class="clear-button" 
 								bsStyle="primary"   
 						        onClick={ this.clearAll.bind(this) } > 
@@ -161,31 +161,31 @@ class Points extends React.Component {
 						</Button>
 						<PointsImport addPoints={ this.addPoints.bind(this) }
 								  validator={ this.validatePoint.bind(this) }  />
-					</div>
-					<div class="col-md-6 col-sm-6 col-xs-12">
+					</Col>
+					<Col md={6} sm={6} xs={12}>
 						<Sets getPoints={ this.getPoints.bind(this) }
 							  onSaveSet={ this.onSaveSet.bind(this) }
 							  onDeleteSet={ this.onDeleteSet.bind(this) }
 							  onLoadSet={ this.onLoadSet.bind(this)}
 								/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12 col-xs-12">
-						<h3>{ setname }</h3>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6 col-xs-12">
+					</Col>
+				</Row>
+				<Row>
+					<Col md={12} sm={12} xs={12}>
+						<h2 class="">{ setname }</h2>
+					</Col>
+				</Row>
+				<Row>
+					<Col md={6} sm={6} xs={12}>
 						<PointTable onDeleteRow={this.deleteById.bind(this)} 
 									onAddRow={this.addPoint.bind(this)} 
 									{ ...this.state } />
-					</div>
-					<div class="col-md-6 col-xs-12">
+					</Col>
+					<Col md={6} sm={6} xs={12}>
 						<Squares { ...this.state }/>
-					</div>
-				</div>
-			</div>
+					</Col>
+				</Row>
+			</Grid>
 		);
 	}
 };

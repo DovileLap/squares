@@ -95,24 +95,27 @@ class PointTable extends React.Component {
 			paginationShowsTotal: true
 		}
 		return (
-			<BootstrapTable 
-				data={this.state.points} 
-				remote 
-				selectRow={ { mode: 'checkbox' } }
-				keyField="id" 
-				striped  
-				hover 
-				pagination 
-				insertRow 
-				deleteRow 
-				exportCSV 
-				csvFileName="points.txt" 
-				options={options} 
-				fetchInfo={ { dataTotalSize: this.points.length } }
-				handleConfirmDeleteRow={ (next) => { next(); } }>
-		      <TableHeaderColumn dataField="x" dataSort editable={ {validator: pointValidator} }>X</TableHeaderColumn>
-		      <TableHeaderColumn dataField="y" dataSort editable={ {validator: pointValidator} }>Y</TableHeaderColumn>
-		    </BootstrapTable>
+			<div>
+				<h3>Points</h3>
+				<BootstrapTable 
+					data={this.state.points} 
+					remote 
+					selectRow={ { mode: 'checkbox' } }
+					keyField="id" 
+					striped  
+					hover 
+					pagination 
+					insertRow 
+					deleteRow 
+					exportCSV 
+					csvFileName="points.txt" 
+					options={options} 
+					fetchInfo={ { dataTotalSize: this.points.length } }
+					handleConfirmDeleteRow={ (next) => { next(); } }>
+			      <TableHeaderColumn dataField="x" dataSort editable={ {validator: pointValidator} }>X</TableHeaderColumn>
+			      <TableHeaderColumn dataField="y" dataSort editable={ {validator: pointValidator} }>Y</TableHeaderColumn>
+			    </BootstrapTable>
+			</div>
 		)
 	}
 }
