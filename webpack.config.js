@@ -21,12 +21,19 @@ module.exports = {
           plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
         }
       },
-      { test: /\.css$/, loader: "style-loader!css-loader" }
+      {test: /\.css$/, loader: "style-loader!css-loader" },
+      {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
+      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
+      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
+      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
+      {test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file', exclude: /node_modules/},
+
+      { test: require.resolve("jquery"), loader: "expose?$!expose?jQuery" }
     ]
   },
   output: {
-    path: path.join(__dirname, "src/client"),
-    publicPath: "/build/",
+    path: path.join(__dirname, "src", "static"),
+    publicPath: "http://localhost:3333/static/",
     filename: "bundle.min.js"
   },
   plugins: debug ? [] : [

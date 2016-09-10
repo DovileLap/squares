@@ -21,7 +21,15 @@ class Sets extends React.Component {
 	}
 
 	loadSets() {
-		this.state.sets = [];
+		$.ajax({
+			url: '/sets',
+			context: this,
+			success: function(data){
+				this.setState({
+					sets: data
+				});
+			}
+		});
 	}
 
 	handleNameChange(e) {
@@ -64,23 +72,30 @@ class Sets extends React.Component {
 			disabled: true,
 			saveBtnLabel: 'Saving...'
 		});
-		this.save(function() {
-			self.setState({
-				disabled: false,
-				saveBtnLabel: 'Save'
-			})
+		this.save();
+	}
+
+	resetButtons() {
+		this.setState({
+			disabled: false,
+			saveBtnLabel: 'Save',
+			loadBtnLabel: 'Load',
+			deleteBtnLabel: 'Delete'
 		});
 	}
 
 	save(callback) {
-		let self = this;
-		setTimeout(function() {
-			window.localStorage.setItem('points-'+self.state.name, JSON.stringify(self.props.getPoints()));
-			self.props.onSaveSet(self.state.name);
-			if (callback) {
-				callback();
-			}
-		}, 3000);
+		$.ajax({
+			url: '/set/'+this.state.name,
+			method: 'POST',
+			contentType: "application/json",
+			context: this,
+			data: JSON.stringify({ 'points': this.props.getPoints() }),
+			success: function() {
+				this.props.onSaveSet(this.state.name);
+			},
+			complete: this.resetButtons
+		});
 	}
 	
 	delete() {
@@ -88,17 +103,15 @@ class Sets extends React.Component {
 			disabled: true,
 			deleteBtnLabel: 'Deleting...'
 		});
-		window.localStorage.removeItem('points-'+this.state.name);
-		this.props.onDeleteSet(this.state.name);
-		let sets = this.state.sets;
-		sets.splice(sets.indexOf(this.state.name), 1);
-		this.setState({
-			name: '',
-			sets: sets
-		});
-		this.setState({
-			disabled: false,
-			deleteBtnLabel: 'Delete'
+		$.ajax({
+			url: '/set/' + this.state.name,
+			method: 'DELETE',
+			context: this,
+			success: function(data){
+				this.props.onDeleteSet(this.state.name);
+				this.loadSets();
+			},
+			complete: this.resetButtons
 		});
 	}
 
@@ -107,12 +120,13 @@ class Sets extends React.Component {
 			disabled: true,
 			loadBtnLabel: 'Loading...'
 		});
-		let points = window.localStorage.getItem('points-'+this.state.name);
-		points = JSON.parse(points);
-		this.props.onLoadSet(this.state.name, points);
-		this.setState({
-			disabled: false,
-			loadBtnLabel: 'Load'
+		$.ajax({
+			url: '/set/' + this.state.name,
+			context: this,
+			success: function(data){
+				this.props.onLoadSet(this.state.name, data);
+			},
+			complete: this.resetButtons
 		});
 	}
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import jQuery from 'jquery';
+import 'bootstrap'; // react-bootstrap-table needs a separate import
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import { validateCoord } from './validators'
