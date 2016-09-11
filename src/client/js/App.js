@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom'
 import { Router, Route, Link, IndexRoute, hashHistory } from 'react-router'
-// export for others scripts to use (bootstrap specifically)
 
 import Points from './Points.js';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import FileInput from 'react-file-input';
 import Spinner from 'react-spinner';
+import { Button } from 'react-bootstrap';
 
 
 class PointsImport extends React.Component {
@@ -52,14 +52,23 @@ class PointsImport extends React.Component {
 		reader.readAsText(file);
 	}
 
+	openDialog() {
+		$('#file-import-input').click();
+	}
+
 	render(){
 		return (
 			<form class="points-import-form form-inline">
-		        <FileInput name="pointsImport"
-		                   accept=".txt"
-		                   placeholder="Import Points"
-		                   className="form-control"
-		                   onChange={ this.handleChange.bind(this) } />
+				<input type="file" 
+						accept=".txt" 
+						id="file-import-input" 
+						style={ { display: "none" } }
+						onChange={ this.handleChange.bind(this) }/>
+		        <Button class="file-import-button" 
+						bsStyle="primary"   
+				        onClick={ this.openDialog.bind(this) } >
+				    Import Points
+				</Button>
 		        <div style = { { display: this.state.loading? '': 'none' }} 
 		        	class="points-import-spinner">
 		        	<Spinner/>
