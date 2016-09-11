@@ -6,47 +6,11 @@ export default class SquaresTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.squares = props.squares;
-        this.state = {
-            squares: props.squares,
-            currentPage: 1,
-            sizePerPage: 20,
-        };
-    }
-
-    componentWillReceiveProps(props){
-        this.squares = props.squares;
-        this.setState({
-            squares: props.squares
-           });
-           this.resetPage();
-    }
-
-    onPageChange(page, sizePerPage) {
-        const currentIndex = (page - 1) * sizePerPage;
-        this.setState({
-          squares: this.squares.slice(currentIndex, currentIndex + sizePerPage),
-          currentPage: page
-        });
-    }
-
-    onSizePerPageList(sizePerPage) {
-        const currentIndex = (this.state.currentPage - 1) * sizePerPage;
-        this.setState({
-          squares: this.squares.slice(currentIndex, currentIndex + sizePerPage),
-          sizePerPage: sizePerPage
-        });
-      }
-
-    resetPage() {
-        const currentIndex = (this.state.currentPage - 1) * this.state.sizePerPage;
-        this.setState({
-          squares: this.squares.slice(currentIndex, currentIndex + this.state.sizePerPage)
-        });
     }
 
     render() {
-        let data = this.state.squares.map(function(square, id){
+
+        let data = this.props.squares.map(function(square, id){
             return {
                 'id': id,
                 'pt1': square[0].x + ' ' + square[0].y,
@@ -59,10 +23,6 @@ export default class SquaresTable extends React.Component {
 
         var options = {
             sizePerPageList: [5, 10, 20, 50],
-            sizePerPage: this.state.sizePerPage,
-            page: this.state.currentPage,
-            onPageChange: this.onPageChange.bind(this),
-            onSizePerPageList: this.onSizePerPageList.bind(this),
             paginationShowsTotal: true
         }
         return (

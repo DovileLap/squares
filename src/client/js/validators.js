@@ -1,5 +1,5 @@
 
-export default function validateCoord(value) {
+export function validateCoord(value) {
     if (!isInt(value)) {
         return false
     }

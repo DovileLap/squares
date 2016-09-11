@@ -12,16 +12,12 @@ export default class Points extends React.Component {
     constructor(props) {
         super(props);
         this.maximumPoints = 10000;
-        this.points = [];
-        props.points.map(function(point){
-            this._addPoint(point);
-        }, this);
+        this.points = []; // Separate, so we can change state in a batch.
         this.state = {
-            points: this.points,
+            points: [],
             name: this.props.params.setname,
             messages: []
         };
-
     }
 
     getPoints() {
@@ -90,7 +86,6 @@ export default class Points extends React.Component {
     }
 
     deletePoint(point) {
-        console.log('deleting ' + point);
         let idx = this.points.indexOf(point);
         if (idx == -1) {
             throw "Unknown point: " + point;

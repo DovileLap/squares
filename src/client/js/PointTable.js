@@ -37,26 +37,17 @@ export default class PointTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.points = props.points;
         this.state = {
-            points: props.points.slice(),
             currentPage: 1,
             sizePerPage: 20,
             loading: false
         };
     }
 
-    componentWillReceiveProps(props){
-        this.points = props.points;
-        this.setState({
-            points: props.points.slice()
-           });
-           this.resetPage();
-    }
-
     componentDidMount() {
         let el = ReactDom.findDOMNode(this);
         
+        // All this cause react-bootstrap-table isn't flexible enough
         let toolbar = $(el).find('.react-bs-table-tool-bar > div > div:first-child');
         // Change bootstrap classes on table toolbar
         toolbar.attr('class', 'col-xs-12 col-sm-12 col-md-12 col-lg-12');
@@ -73,33 +64,21 @@ export default class PointTable extends React.Component {
     }
 
     onPageChange(page, sizePerPage) {
-        const currentIndex = (page - 1) * sizePerPage;
         this.setState({
-          points: this.addIds(this.points.slice(currentIndex, currentIndex + sizePerPage)),
           currentPage: page
         });
     }
 
     onSizePerPageList(sizePerPage) {
-        const currentIndex = (this.state.currentPage - 1) * sizePerPage;
         this.setState({
-          points: this.addIds(this.points.slice(currentIndex, currentIndex + sizePerPage)),
           sizePerPage: sizePerPage
         });
       }
 
-    resetPage() {
-        const currentIndex = (this.state.currentPage - 1) * this.state.sizePerPage;
-        this.setState({
-          points: this.addIds(this.points.slice(currentIndex, currentIndex + this.state.sizePerPage))
-        });
-    }
 
-    addIds(points) {
-        points.forEach(function(point, id) {
-            point.id = id;
-        });
-        return points;
+    getPage() {
+        const currentIndex = (this.state.currentPage - 1) * this.state.sizePerPage;
+        return this.props.points.slice(currentIndex, currentIndex + this.state.sizePerPage);
     }
 
     onDeleteRows(rowids) {
@@ -117,9 +96,8 @@ export default class PointTable extends React.Component {
     }
 
     deleteRow(id) {
-        let point = this.state.points.find(function(point) {
-            return point.id == id;
-        })
+        const page = this.getPage();
+        const point = page[id];
         if (point) {
             this.props.onDeleteRow(point);
         }
@@ -127,11 +105,6 @@ export default class PointTable extends React.Component {
 
     onAddRow(row) {
         this.props.onAddRow(row);
-        this.resetPage();
-    }
-
-    export() {
-        return this.points;
     }
 
     toggleLoading(loading) {
@@ -141,6 +114,11 @@ export default class PointTable extends React.Component {
     }
 
     render() {
+        let points = this.getPage();
+        points.forEach(function(point, id) {
+            point.id = id;
+        });
+
         var options = {
             sizePerPageList: [5, 10, 20, 50],
             sizePerPage: this.state.sizePerPage,
@@ -157,7 +135,7 @@ export default class PointTable extends React.Component {
             <div class="points-table-container">
                 <h3>Points</h3>
                 <BootstrapTable 
-                    data={this.state.points} 
+                    data={ points } 
                     remote 
                     selectRow={ { mode: 'checkbox' } }
                     keyField="id" 
@@ -167,7 +145,7 @@ export default class PointTable extends React.Component {
                     insertRow 
                     deleteRow 
                     options={options} 
-                    fetchInfo={ { dataTotalSize: this.points.length } }
+                    fetchInfo={ { dataTotalSize: this.props.points.length } }
                     >
                   <TableHeaderColumn dataField="x" dataSort editable={ {validator: pointValidator} }>X</TableHeaderColumn>
                   <TableHeaderColumn dataField="y" dataSort editable={ {validator: pointValidator} }>Y</TableHeaderColumn>
