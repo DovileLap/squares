@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'react-bootstrap';
 import $ from 'jquery';
+import { hashHistory } from 'react-router'
 
 import SetDialog from './SetDialog';
 
@@ -10,12 +11,18 @@ class Sets extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			name: '',
+			name: this.props.preloadSet || '',
 			action: null,
 			sets: [],
 			savedSets: [] 
 		}
+	}
+
+	componentDidMount() {
 		this.loadSets();
+		if (this.props.preloadSet) {
+			this.load();
+		}
 	}
 
 	onLoadSets(sets) {
@@ -81,6 +88,7 @@ class Sets extends React.Component {
 	onSave() {
 		this.props.onSaveSet(this.state.name);
 		this.loadSets();
+		hashHistory.push('/' + this.state.name);
 	}
 
 	save(callback) {
@@ -97,6 +105,7 @@ class Sets extends React.Component {
 	onDelete() {
 		this.props.onDeleteSet(this.state.name);
 		this.loadSets();
+		hashHistory.push('/');
 	}
 	
 	delete() {
@@ -114,6 +123,7 @@ class Sets extends React.Component {
 
 	onLoad(points) {
 		this.props.onLoadSet(this.state.name, points);
+		hashHistory.push('/' + this.state.name);
 	}
 
 	load() {

@@ -5,6 +5,8 @@ import jQuery from 'jquery';
 import $ from 'jquery';
 import 'bootstrap'; // react-bootstrap-table needs a separate import
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Spinner from 'react-spinner';
+
 
 import { validateCoord } from './validators'
 import PointsImport from './PointsImport';
@@ -20,7 +22,7 @@ function pointValidator(value) {
 		notification: { 
 			type: 'success',
 			msg : '',
-			title: ''
+			title: '',
 		}};
 	if (!validateCoord(value)) {
 		response.isValid = false;
@@ -37,16 +39,17 @@ class PointTable extends React.Component {
 		super(props);
 		this.points = props.points;
 		this.state = {
-			points: props.points,
+			points: props.points.slice(),
 			currentPage: 1,
 			sizePerPage: 20,
+			loading: false
 		};
 	}
 
 	componentWillReceiveProps(props){
 		this.points = props.points;
 	    this.setState({
-	    	points: props.points
+	    	points: props.points.slice()
 	   	});
 	   	this.resetPage();
 	}
@@ -54,20 +57,25 @@ class PointTable extends React.Component {
 	componentDidMount() {
 	    let el = ReactDom.findDOMNode(this);
 	    
-	    let toolbar = jQuery(el).find('.react-bs-table-tool-bar > div > div:first-child');
+	    let toolbar = $(el).find('.react-bs-table-tool-bar > div > div:first-child');
 	    // Change bootstrap classes on table toolbar
 	    toolbar.attr('class', 'col-xs-12 col-sm-12 col-md-12 col-lg-12');
 
-	    let buttons = jQuery(el).find('.points-table-extra-button');
+	    let buttons = $(el).find('.points-table-extra-button');
 	    // Add Extra buttons 
 	    buttons.detach();
 	    toolbar.find('.btn-group').append(buttons);
+
+	    // And spinner
+	    let spinner = $(el).find('.points-spinner');
+	    spinner.detach();
+	    toolbar.append(spinner);
 	}
 
 	onPageChange(page, sizePerPage) {
 		const currentIndex = (page - 1) * sizePerPage;
 	    this.setState({
-	      points: this.points.slice(currentIndex, currentIndex + sizePerPage),
+	      points: this.addIds(this.points.slice(currentIndex, currentIndex + sizePerPage)),
 	      currentPage: page
 	    });
 	}
@@ -75,7 +83,7 @@ class PointTable extends React.Component {
 	onSizePerPageList(sizePerPage) {
 	    const currentIndex = (this.state.currentPage - 1) * sizePerPage;
 	    this.setState({
-	      points: this.points.slice(currentIndex, currentIndex + sizePerPage),
+	      points: this.addIds(this.points.slice(currentIndex, currentIndex + sizePerPage)),
 	      sizePerPage: sizePerPage
 	    });
 	  }
@@ -83,8 +91,15 @@ class PointTable extends React.Component {
 	resetPage() {
 		const currentIndex = (this.state.currentPage - 1) * this.state.sizePerPage;
 	    this.setState({
-	      points: this.points.slice(currentIndex, currentIndex + this.state.sizePerPage)
+	      points: this.addIds(this.points.slice(currentIndex, currentIndex + this.state.sizePerPage))
 	    });
+	}
+
+	addIds(points) {
+		points.forEach(function(point, id) {
+			point.id = id;
+		});
+		return points;
 	}
 
 	onDeleteRows(rowids) {
@@ -119,6 +134,12 @@ class PointTable extends React.Component {
 		return this.points;
 	}
 
+	toggleLoading(loading) {
+		this.setState({
+			loading: loading
+		});
+	}
+
 	render() {
 		var options = {
 			sizePerPageList: [5, 10, 20, 50],
@@ -131,6 +152,7 @@ class PointTable extends React.Component {
 			paginationShowsTotal: true,
 			handleConfirmDeleteRow: (next) => { next(); } 
 		}
+
 		return (
 			<div class="points-table-container">
 				<h3>Points</h3>
@@ -154,7 +176,8 @@ class PointTable extends React.Component {
 			    Unfortunately the component itself lacks flexibility in buttons. */}
 			    <Button class="clear-button points-table-extra-button" 
 						bsStyle="danger" 
-						onClick={ this.props.clearAll } > 
+						onClick={ this.props.clearAll } 
+						disabled= { this.state.loading } > 
 					<i class="glyphicon glyphicon-trash"></i>
 				    &nbsp;Clear all 
 				</Button>
@@ -163,11 +186,18 @@ class PointTable extends React.Component {
 					validator={ this.props.validator } 
 					handleMessages={ this.props.handleMessages } 
 					limit={ this.props.limit } 
-					btnClass="points-table-extra-button" />
+					toggleLoading = { this.toggleLoading.bind(this) }
+					btnClass="points-table-extra-button" 
+					disabled= { this.state.loading } />
 				<PointsExport 
 			    	points={ this.points } 
-			    	filename="points.txt"
+			    	filename="points.txt" 
+			    	disabled= { this.state.loading }
 			    />
+			    <div style = { { display: this.state.loading? '': 'none' }} 
+		        	class="points-spinner">
+		        	<Spinner/>
+		        </div>
 			</div>
 		)
 	}

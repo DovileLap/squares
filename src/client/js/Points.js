@@ -12,14 +12,13 @@ class Points extends React.Component {
 	constructor(props) {
 		super(props);
 		this.maximumPoints = 10000;
-		this.nextId = 0;
 		this.points = [];
 		props.points.map(function(point){
 			this._addPoint(point);
 		}, this);
 		this.state = {
 			points: this.points,
-			name: '',
+			name: this.props.params.setname,
 			messages: []
 		};
 
@@ -31,11 +30,9 @@ class Points extends React.Component {
 
 	newPoint(x, y) {
 		let newPoint = { 
-			  id: this.nextId,
 			  x: parseInt(x),
 			  y: parseInt(y)
 		};
-		this.nextId++;
 		return newPoint;
 	}
 
@@ -174,6 +171,7 @@ class Points extends React.Component {
 							  onDeleteSet={ this.onDeleteSet.bind(this) }
 							  onLoadSet={ this.onLoadSet.bind(this)} 
 							  SetsAPI = { new SetsAPI() }
+							  preloadSet={ this.props.params.setname }
 								/>
 					</Col>
 				</Row>

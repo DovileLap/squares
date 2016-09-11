@@ -46,11 +46,9 @@ class SquaresTable extends React.Component {
 	}
 
 	render() {
-		let fakeId = 0;
-		let data = this.state.squares.map(function(square){
-			fakeId++;
+		let data = this.state.squares.map(function(square, id){
 			return {
-				'id': fakeId,
+				'id': id,
 				'pt1': square[0].x + ' ' + square[0].y,
 				'pt2': square[1].x + ' ' + square[1].y,
 				'pt3': square[2].x + ' ' + square[2].y,

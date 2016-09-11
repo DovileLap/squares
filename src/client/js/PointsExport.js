@@ -20,7 +20,8 @@ class PointsExport extends React.Component {
 		return (
 			<Button class="clear-button points-table-extra-button" 
 					bsStyle="success" 
-					onClick = { this.export.bind(this) } > 
+					onClick = { this.export.bind(this) } 
+					disabled={ this.props.disabled }> 
 				<i class="glyphicon glyphicon-export"></i>
 			    &nbsp;Export 
 			</Button>

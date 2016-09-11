@@ -24,6 +24,7 @@ render(
 	<Router history={hashHistory}>
 	  <Route path="/" component={App}>
 	 	<IndexRoute component={Points}/>
+	 	<Route path=":setname" component={Points} />
 	  </Route>
 	</Router>,
     document.getElementById('content')

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import Spinner from 'react-spinner';
 import { Button } from 'react-bootstrap';
 
 
@@ -69,9 +68,9 @@ class PointsImport extends React.Component {
 		    	self.props.handleMessages(messages);
 		    }
 		    
-		    self.setState({ loading: false })
+		    self.props.toggleLoading(false);
 		}
-		this.setState({ loading: true});
+		this.props.toggleLoading(true);
 		// reset file input, so we can import same file again
 		this.inputEl().val('');
 		reader.readAsText(file);
@@ -100,14 +99,11 @@ class PointsImport extends React.Component {
 						onChange={ this.handleChange.bind(this) }/>
 		        <Button class={ "file-import-button " + this.props.btnClass }  
 						bsStyle="info"   
-				        onClick={ this.openDialog.bind(this) } >
+				        onClick={ this.openDialog.bind(this) } 
+				        disabled={ this.props.disabled } >
 				    <i class="glyphicon glyphicon-import"></i>
 				    &nbsp;Import
 				</Button>
-		        <div style = { { display: this.state.loading? '': 'none' }} 
-		        	class="points-import-spinner">
-		        	<Spinner/>
-		        </div>
 		      </form>
 
 		)
