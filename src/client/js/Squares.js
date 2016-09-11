@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
 
 import SquaresTable from './SquaresTable';
 import SquaresViz from './SquaresViz';
@@ -75,9 +76,14 @@ class Squares extends React.Component {
 		return (
 			<div>
 				<h3>Squares</h3>
-				<SquaresViz { ...this.state }
-					/>
-				<SquaresTable squares={ this.state.squares }/>
+				<Tabs defaultActiveKey={1} id="squares-tabs">
+					<Tab eventKey={1} title="Visual">
+						<SquaresViz { ...this.state } />
+					</Tab>
+					<Tab eventKey={2} title="List">
+						<SquaresTable squares={ this.state.squares }/>
+					</Tab>
+				</Tabs>
 			</div>
 		)
 	}

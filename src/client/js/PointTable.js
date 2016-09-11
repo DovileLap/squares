@@ -132,7 +132,7 @@ class PointTable extends React.Component {
 			handleConfirmDeleteRow: (next) => { next(); } 
 		}
 		return (
-			<div>
+			<div class="points-table-container">
 				<h3>Points</h3>
 				<BootstrapTable 
 					data={this.state.points} 
@@ -152,10 +152,9 @@ class PointTable extends React.Component {
 			    </BootstrapTable>
 			    {/* All buttons with .points-table-extra-button will be moved to toolbar of the table on componentDidMount.
 			    Unfortunately the component itself lacks flexibility in buttons. */}
-			    
 			    <Button class="clear-button points-table-extra-button" 
 						bsStyle="danger" 
-						onClick = { this.props.clearAll } > 
+						onClick={ this.props.clearAll } > 
 					<i class="glyphicon glyphicon-trash"></i>
 				    &nbsp;Clear all 
 				</Button>
@@ -163,8 +162,8 @@ class PointTable extends React.Component {
 					addPoints={ this.props.addPoints }
 					validator={ this.props.validator } 
 					handleMessages={ this.props.handleMessages } 
-					limit = { this.props.limit } 
-					btnClass = "points-table-extra-button" />
+					limit={ this.props.limit } 
+					btnClass="points-table-extra-button" />
 				<PointsExport 
 			    	points={ this.points } 
 			    	filename="points.txt"

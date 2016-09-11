@@ -164,8 +164,11 @@ class Points extends React.Component {
 		}
 		return (
 			<Grid fluid class="main-container">
-				<Row class="toolbar">
-					<Col md={12} sm={12} xs={12}>
+				<Row class="header">
+					<Col md={4} sm={4} xs={12}>
+						<h2 class="">{ setname }</h2>
+					</Col>
+					<Col md={8} sm={8} xs={12}>
 						<Sets getPoints={ this.getPoints.bind(this) }
 							  onSaveSet={ this.onSaveSet.bind(this) }
 							  onDeleteSet={ this.onDeleteSet.bind(this) }
@@ -177,11 +180,6 @@ class Points extends React.Component {
 				<Row>
 					<Col  md={12} sm={12} xs={12}>
 						<ErrorAlert messages={ this.state.messages }/>
-					</Col>
-				</Row>
-				<Row>
-					<Col md={12} sm={12} xs={12}>
-						<h2 class="">{ setname }</h2>
 					</Col>
 				</Row>
 				<Row>

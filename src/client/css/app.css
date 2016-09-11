@@ -6,10 +6,15 @@ body .react-spinner_bar {
 	background-color: black;
 }
 
-.toolbar > form,
-.toolbar > form {
-	margin-top: 3px;
-	margin-bottom: 3px;
+.header h2 {
+	margin-top: 0;
+}
+.header {
+	margin-bottom: 20px;
+}
+
+.points-table-container .react-bs-table-container {
+	margin-top: 21px;
 }
 
 .points-import-form {
@@ -48,6 +53,7 @@ body .react-spinner_bar {
 
 .points-viz-container {
 	border: solid 1px black;
+	margin-top: 5px;
 }
 
 .points-viz-container .square {
