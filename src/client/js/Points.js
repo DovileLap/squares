@@ -12,6 +12,7 @@ import { validateCoord } from './validators'
 class Points extends React.Component {
 	constructor(props) {
 		super(props);
+		this.maximumPoints = 10000;
 		this.nextId = 0;
 		this.points = [];
 		props.points.map(function(point){
@@ -76,7 +77,7 @@ class Points extends React.Component {
 		}
 		let intPoint = {x: parseInt(point.x),
 						y: parseInt(point.y)};
-		if (this.points.length > 10000) {
+		if (this.points.length >= this.maximumPoints) {
 			resp.valid = false;
 			resp.msg = 'Too many points.';
 		} else if (this.pointExists(intPoint)) {
@@ -187,7 +188,8 @@ class Points extends React.Component {
 						</Button>
 						<PointsImport addPoints={ this.addPoints.bind(this) }
 								  validator={ this.validatePoint.bind(this) } 
-								  handleMessages={ this.handleMessages.bind(this) } />
+								  handleMessages={ this.handleMessages.bind(this) } 
+								  limit = { this.maximumPoints - this.state.points.length } />
 					</Col>
 					<Col md={6} sm={6} xs={12}>
 						<Sets getPoints={ this.getPoints.bind(this) }

@@ -35,11 +35,21 @@ class PointsImport extends React.Component {
 		      		continue;
 		      	}
 		      	let point = { x: coords[0], y: coords[1] };
+
+				// If we reached max points allowed, ignore the rest		      	
+				if (points.length >= self.props.limit) {
+					messages.push([lineidx, line, "Maximum point set capacity reached, ignoring the rest."]);
+					break;
+				}
+
+				// Otherwise vlidate the point
 		      	let validates = self.props.validator(point);
 		      	if (!validates.valid) {
 		      		messages.push([lineidx, line, validates.msg]);
 		      		continue;
 		      	}
+
+		      	// And make sure it's not duplicate within the file too
 		      	let duplicate = !!points.find(function(savedPoint) {
 					return savedPoint.x == point.x && savedPoint.y == point.y;
 				});
