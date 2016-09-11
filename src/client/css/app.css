@@ -1,78 +1,78 @@
 .content {
-	margin: 20px 5px 0 5px;
+    margin: 20px 5px 0 5px;
 }
 
 body .react-spinner_bar {
-	background-color: black;
+    background-color: black;
 }
 
 .header h2 {
-	margin-top: 0;
+    margin-top: 0;
 }
 .header {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .points-table-container .react-bs-table-container {
-	margin-top: 21px;
+    margin-top: 21px;
 }
 
 .points-import-form {
-	display: inline-block;
-	margin-left: 10px;
-	margin-right: 10px;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .points-import-form > div{
-	display: inline-block;
+    display: inline-block;
 }
 
 
 .points-spinner {
-	display: inline-block;
-	margin-left: 5px;
-	margin-bottom: -12px;
-	width: 34px;
-	height: 34px;
+    display: inline-block;
+    margin-left: 5px;
+    margin-bottom: -12px;
+    width: 34px;
+    height: 34px;
 }
 
 .sets-save-form {
-	float: right;
+    float: right;
 }
 
 .sets-save-form .form-control {
-	margin-right: 3px;
+    margin-right: 3px;
 }
 
 
 .sets-save-form .btn-group{
-	margin-left: 25px;
-	margin-right: 10px;
+    margin-left: 25px;
+    margin-right: 10px;
 }
 
 
 .points-viz-container {
-	border: solid 1px black;
-	margin-top: 5px;
+    border: solid 1px black;
+    margin-top: 5px;
 }
 
 .points-viz-container .square {
-	stroke: red;
-	stroke-width: 2px;
-	fill: none;
+    stroke: red;
+    stroke-width: 2px;
+    fill: none;
 }
 
 .points-viz-container .square.active {
-	stroke: black;
-	stroke-width: 4px;
-	z-index:5;
+    stroke: black;
+    stroke-width: 4px;
+    z-index:5;
 }
 
 .error-alert {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 .error-alert-more {
-	cursor: pointer;
-	color: inherit;
+    cursor: pointer;
+    color: inherit;
 }

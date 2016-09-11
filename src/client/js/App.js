@@ -13,19 +13,19 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 var App = React.createClass({
   render: function() {
     return (
-	    <div className="content">
-			{this.props.children}
-	    </div>
+        <div className="content">
+            {this.props.children}
+        </div>
     )
   }
 });
 
 render(
-	<Router history={hashHistory}>
-	  <Route path="/" component={App}>
-	 	<IndexRoute component={Points}/>
-	 	<Route path=":setname" component={Points} />
-	  </Route>
-	</Router>,
+    <Router history={hashHistory}>
+      <Route path="/" component={App}>
+         <IndexRoute component={Points}/>
+         <Route path=":setname" component={Points} />
+      </Route>
+    </Router>,
     document.getElementById('content')
 );

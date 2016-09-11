@@ -57,7 +57,7 @@ app.delete('/set/:setid', function(req, res){
 // Error handling
 app.use(function(err, req, res, next){
     if (err instanceof DataError) {
-        return next()
+        return next();
     }
     console.log(err);
     res.status(500).send("Internal error");

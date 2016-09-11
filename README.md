@@ -8,6 +8,8 @@
 
 
 **Dev**:
+
+ set NODE_ENV to dev
 ```
 npm install
 npm run start-node-dev

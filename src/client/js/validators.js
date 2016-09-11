@@ -1,13 +1,13 @@
 
-function validateCoord(value) {
-	if (!isInt(value)) {
-		return false
-	}
-	let valueInt = parseInt(value);
-	if (valueInt < -5000 || 5000 < valueInt) {
-		return false;
-	}
-	return true;
+export default function validateCoord(value) {
+    if (!isInt(value)) {
+        return false
+    }
+    let valueInt = parseInt(value);
+    if (valueInt < -5000 || 5000 < valueInt) {
+        return false;
+    }
+    return true;
 }
 
 function isInt(value) {
@@ -17,5 +17,3 @@ function isInt(value) {
   var x = parseFloat(value);
   return (x | 0) === x;
 }
-
-module.exports.validateCoord = validateCoord;
