@@ -98,10 +98,11 @@ class PointsImport extends React.Component {
 						accept=".txt" 
 						style={ { display: "none" } }
 						onChange={ this.handleChange.bind(this) }/>
-		        <Button class="file-import-button" 
-						bsStyle="primary"   
+		        <Button class={ "file-import-button " + this.props.btnClass }  
+						bsStyle="info"   
 				        onClick={ this.openDialog.bind(this) } >
-				    Import Points
+				    <i class="glyphicon glyphicon-import"></i>
+				    &nbsp;Import
 				</Button>
 		        <div style = { { display: this.state.loading? '': 'none' }} 
 		        	class="points-import-spinner">

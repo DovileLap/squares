@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Grid, Row, Col } from 'react-bootstrap';
 import PointTable from './PointTable';
-import PointsImport from './PointsImport';
 import Squares from './Squares';
 import Sets from './Sets';
 import SetsAPI from './SetsAPI';
@@ -180,18 +179,7 @@ class Points extends React.Component {
 		return (
 			<Grid fluid class="main-container">
 				<Row class="toolbar">
-					<Col md={6} sm={6} xs={12}>
-						<Button class="clear-button" 
-								bsStyle="primary"   
-						        onClick={ this.clearAll.bind(this) } > 
-						    Clear all Points
-						</Button>
-						<PointsImport addPoints={ this.addPoints.bind(this) }
-								  validator={ this.validatePoint.bind(this) } 
-								  handleMessages={ this.handleMessages.bind(this) } 
-								  limit = { this.maximumPoints - this.state.points.length } />
-					</Col>
-					<Col md={6} sm={6} xs={12}>
+					<Col md={12} sm={12} xs={12}>
 						<Sets getPoints={ this.getPoints.bind(this) }
 							  onSaveSet={ this.onSaveSet.bind(this) }
 							  onDeleteSet={ this.onDeleteSet.bind(this) }
@@ -214,10 +202,15 @@ class Points extends React.Component {
 					<Col md={6} sm={6} xs={12}>
 						<PointTable onDeleteRow={this.deleteById.bind(this)} 
 									onAddRow={this.onAddPoint.bind(this)}
-									{ ...this.state } />
+									points={ this.state.points }
+									clearAll={this.clearAll.bind(this) } 
+									addPoints={ this.addPoints.bind(this) }
+									validator={ this.validatePoint.bind(this) } 
+									handleMessages={ this.handleMessages.bind(this) } 
+									limit={ this.maximumPoints - this.state.points.length }/>
 					</Col>
 					<Col md={6} sm={6} xs={12}>
-						<Squares { ...this.state }/>
+						<Squares points= { this.state.points }/>
 					</Col>
 				</Row>
 			</Grid>

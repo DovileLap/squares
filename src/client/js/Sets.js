@@ -162,7 +162,7 @@ class Sets extends React.Component {
 					<Button disabled={ disableButtons} 
 							bsStyle="primary" 
 							type="submit" > 
-						<span class="glyphicon glyphicon-floppy-disk"></span>
+						<i class="glyphicon glyphicon-floppy-disk"></i>
 					    &nbsp;{ this.state.action == 'saving'? 'Saving...': 'Save' }
 					</Button>
 					<Button bsStyle="success"
