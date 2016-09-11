@@ -50,6 +50,11 @@ body .react-spinner_bar {
     margin-right: 10px;
 }
 
+.sets-save-form label {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
 
 .points-viz-container {
     border: solid 1px black;

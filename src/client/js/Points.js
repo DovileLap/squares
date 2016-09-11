@@ -6,7 +6,7 @@ import Sets from './Sets';
 import SetsAPI from './SetsAPI';
 import ErrorAlert from './ErrorAlert';
 
-import { validateCoord } from './validators'
+import { validateCoord } from './validators';
 
 export default class Points extends React.Component {
     constructor(props) {
@@ -45,7 +45,7 @@ export default class Points extends React.Component {
         this._addPoint(point);
         this.setState({
             points: this.points
-        })
+        });
     }
 
     addPoints(points) {
@@ -62,10 +62,10 @@ export default class Points extends React.Component {
         let resp = { valid: true, msg: ''};
         if (!point.hasOwnProperty('x') || !point.hasOwnProperty('y')) {
             resp.valid = false;
-            resp.msg = 'Point has to have x and y coordinates defined.'
+            resp.msg = 'Point has to have x and y coordinates defined.';
         } else if (!validateCoord(point.x) || !validateCoord(point.y)) {
             resp.valid = false;
-            resp.msg = 'Coordinates have to be integers between -5000 and 5000.'
+            resp.msg = 'Coordinates have to be integers between -5000 and 5000.';
         }
         let intPoint = {x: parseInt(point.x),
                         y: parseInt(point.y)};
@@ -82,7 +82,7 @@ export default class Points extends React.Component {
     pointExists(point) {
         return !!this.points.find(function(savedPoint) {
             return savedPoint.x == point.x && savedPoint.y == point.y;
-        })
+        });
     }
 
     deletePoint(point) {
@@ -108,7 +108,7 @@ export default class Points extends React.Component {
         if (validation.valid) {
             this.addPoint(point);
         } else {
-            this.addMessage(validation.msg);
+            this.setState({ messages: [validation.msg] });
         }
     }
 

@@ -8,7 +8,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Spinner from 'react-spinner';
 
 
-import { validateCoord } from './validators'
+import { validateCoord } from './validators';
 import PointsImport from './PointsImport';
 import PointsExport from './PointsExport';
 
@@ -71,7 +71,8 @@ export default class PointTable extends React.Component {
 
     onSizePerPageList(sizePerPage) {
         this.setState({
-          sizePerPage: sizePerPage
+          sizePerPage: sizePerPage,
+          currentPage: 1
         });
       }
 
@@ -92,7 +93,6 @@ export default class PointTable extends React.Component {
         } else {
             this.deleteRow(rowids);
         }
-        this.resetPage();
     }
 
     deleteRow(id) {
@@ -129,7 +129,7 @@ export default class PointTable extends React.Component {
             onSizePerPageList: this.onSizePerPageList.bind(this),
             paginationShowsTotal: true,
             handleConfirmDeleteRow: (next) => { next(); } 
-        }
+        };
 
         return (
             <div class="points-table-container">
@@ -168,7 +168,7 @@ export default class PointTable extends React.Component {
                     btnClass="points-table-extra-button" 
                     disabled= { this.state.loading } />
                 <PointsExport 
-                    points={ this.points } 
+                    points={ this.props.points } 
                     filename="points.txt" 
                     disabled= { this.state.loading }
                 />

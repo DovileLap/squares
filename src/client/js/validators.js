@@ -1,7 +1,7 @@
 
 export function validateCoord(value) {
     if (!isInt(value)) {
-        return false
+        return false;
     }
     let valueInt = parseInt(value);
     if (valueInt < -5000 || 5000 < valueInt) {

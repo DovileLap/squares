@@ -29,7 +29,18 @@ module.exports = {
       {test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file', exclude: /node_modules/},
 
       { test: require.resolve("jquery"), loader: "expose?$!expose?jQuery" }
-    ]
+    ],
+    /* didn't figure out not failing on jsx parts */
+    /*preLoaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/, // do not lint third-party code
+        loader: 'jshint-loader'
+      }
+    ],
+    jshint: {
+      failOnHint: false
+    }*/
   },
   output: {
     path: path.join(__dirname, "src", "static"),

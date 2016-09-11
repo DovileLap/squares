@@ -8,7 +8,7 @@ export default class PointsImport extends React.Component {
         super(props);
         this.state = {
             loading: false
-        }
+        };
     }
 
 
@@ -28,12 +28,12 @@ export default class PointsImport extends React.Component {
                 if (line.length === 0) {
                     continue;
                 }
-                  let coords = line.split(' ');
-                  if (coords.length != 2) {
-                      messages.push([lineidx, line, "Malformed line, expecting two integers separated by a space."]);
-                      continue;
-                  }
-                  let point = { x: coords[0], y: coords[1] };
+                let coords = line.split(' ');
+                if (coords.length != 2) {
+                    messages.push([lineidx, line, "Malformed line, expecting two integers separated by a space."]);
+                    continue;
+                }
+                let point = { x: coords[0], y: coords[1] };
 
                 // If we reached max points allowed, ignore the rest                  
                 if (points.length >= self.props.limit) {
@@ -42,26 +42,26 @@ export default class PointsImport extends React.Component {
                 }
 
                 // Otherwise vlidate the point
-                  let validates = self.props.validator(point);
-                  if (!validates.valid) {
-                      messages.push([lineidx, line, validates.msg]);
-                      continue;
-                  }
+                let validates = self.props.validator(point);
+                if (!validates.valid) {
+                    messages.push([lineidx, line, validates.msg]);
+                    continue;
+                }
 
-                  // And make sure it's not duplicate within the file too
-                  let duplicate = !!points.find(function(savedPoint) {
-                    return savedPoint.x == point.x && savedPoint.y == point.y;
-                });
+                // And make sure it's not duplicate within the file too
+                let duplicate = !!points.find((savedPoint) =>
+                    savedPoint.x == point.x && savedPoint.y == point.y
+                );
                 if (duplicate) {
                     messages.push([lineidx, line, "Duplicate point."]);
                     continue;
                 }
 
-                  points.push(point);
+                points.push(point);
             }
             self.props.addPoints(points);
             if (messages.length > 0) {
-                messages = self.formatMessages(messages)
+                messages = self.formatMessages(messages);
                 if (points.length > 0) {
                     messages.unshift("".concat(points.length, " points have been imported, but there were errors:"));
                 }
@@ -69,7 +69,7 @@ export default class PointsImport extends React.Component {
             }
             
             self.props.toggleLoading(false);
-        }
+        };
         this.props.toggleLoading(true);
         // reset file input, so we can import same file again
         this.inputEl().val('');
@@ -79,7 +79,7 @@ export default class PointsImport extends React.Component {
     formatMessages(messages) {
         return messages.map(function(message) {
             return "Error in line " + (message[0] + 1) + " [" + message[1] + "]: " + message[2];
-        })
+        });
     }
 
     inputEl() {

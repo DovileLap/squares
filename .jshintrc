@@ -1,0 +1,7 @@
+{
+	"esversion": 6,
+    "browser": true,
+    "predef": [ "window" ],
+    "loopfunc": true,
+    "laxbreak": true
+}

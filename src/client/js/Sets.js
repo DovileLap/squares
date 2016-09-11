@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'react-bootstrap';
 import $ from 'jquery';
-import { hashHistory } from 'react-router'
+import { hashHistory } from 'react-router';
 
 import SetDialog from './SetDialog';
 
@@ -15,7 +15,7 @@ export default class Sets extends React.Component {
             action: null,
             sets: [],
             savedSets: [] 
-        }
+        };
     }
 
     componentDidMount() {
@@ -49,12 +49,12 @@ export default class Sets extends React.Component {
             return {
                 valid: false,
                 message: 'This name is already taken.'
-            }
+            };
         }
         return {
             valid: true,
             message: ''
-        }
+        };
     }
 
     createNewName(name) {
@@ -71,7 +71,7 @@ export default class Sets extends React.Component {
     handleSubmit(e) {
         let self = this;
         e.preventDefault();
-        if (this.state.name.length == 0) return;
+        if (this.state.name.length === 0) return;
 
         this.setState({
             action: 'saving'
@@ -99,7 +99,7 @@ export default class Sets extends React.Component {
                 success: this.onSave.bind(this),
                 complete: this.reset.bind(this)
             }
-        )
+        );
     }
 
     onDelete() {
@@ -109,7 +109,7 @@ export default class Sets extends React.Component {
     }
     
     delete() {
-        if (this.state.name.length == 0) return;
+        if (this.state.name.length === 0) return;
         this.setState({
             action: 'deleting'
         });
@@ -127,7 +127,7 @@ export default class Sets extends React.Component {
     }
 
     load() {
-        if (this.state.name.length == 0) return;
+        if (this.state.name.length === 0) return;
         this.setState({
             action: 'loading'
         });
@@ -136,7 +136,7 @@ export default class Sets extends React.Component {
                 success: this.onLoad.bind(this),
                 complete: this.reset.bind(this)
             }
-        )
+        );
     }
 
     openDialog() {
@@ -158,6 +158,7 @@ export default class Sets extends React.Component {
 
         return (
             <form class="sets-save-form form-inline" onSubmit={ this.handleSubmit.bind(this) }>
+                <label>Sets:</label>
                 <select type="select" 
                         class="form-control"
                         value={ this.state.name }

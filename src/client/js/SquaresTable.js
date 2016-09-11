@@ -4,10 +4,6 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 export default class SquaresTable extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
 
         let data = this.props.squares.map(function(square, id){
@@ -17,14 +13,14 @@ export default class SquaresTable extends React.Component {
                 'pt2': square[1].x + ' ' + square[1].y,
                 'pt3': square[2].x + ' ' + square[2].y,
                 'pt4': square[3].x + ' ' + square[3].y,
-            }
+            };
         });
 
 
-        var options = {
+        const options = {
             sizePerPageList: [5, 10, 20, 50],
             paginationShowsTotal: true
-        }
+        };
         return (
             <BootstrapTable 
                 data={data} 

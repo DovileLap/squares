@@ -21,25 +21,23 @@ export default class Squares extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            points: props.points,
             squares: this.calculateSquares(props.points)
-        }
+        };
     }
 
     componentWillReceiveProps(props){
         this.setState({
-            points: props.points,
             squares: this.calculateSquares(props.points)
-           });
+        });
     }
 
     calculateSquares(points) {
         let sortedPoints = points.sort(comparePoints);
-        let hash = {}
+        let hash = {};
         for (let idx = 0; idx < sortedPoints.length; idx++) {
             let point = sortedPoints[idx];
             if (hash[point.x] === undefined){
-                hash[point.x] = []
+                hash[point.x] = [];
             }
             hash[point.x].push(point.y);
         }
@@ -51,7 +49,7 @@ export default class Squares extends React.Component {
                 let secondPt = sortedPoints[secondIdx];
                 // Let's only check certain angle lines, otherwise we'll be duplicating results.
                 if (!(firstPt.x <= secondPt.x && firstPt.y < secondPt.y)) {
-                    continue
+                    continue;
                 }
                 let thirdPt = {
                     x: secondPt.x + (secondPt.y - firstPt.y),
@@ -78,7 +76,8 @@ export default class Squares extends React.Component {
                 <h3>Squares</h3>
                 <Tabs defaultActiveKey={1} id="squares-tabs">
                     <Tab eventKey={1} title="Visual">
-                        <SquaresViz { ...this.state } />
+                        <SquaresViz squares={ this.state.squares} 
+                                    points={ this.props.points } />
                     </Tab>
                     <Tab eventKey={2} title="List">
                         <SquaresTable squares={ this.state.squares }/>

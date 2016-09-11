@@ -33,7 +33,7 @@ export default class SquaresViz extends React.Component {
         this.svg = d3.select(el).append("svg")
             .attr("class", "points-viz-container");
         this.g = this.svg.append("g")
-               .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
+               .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
         this.updateViz(el);
     }
 

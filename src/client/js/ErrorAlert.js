@@ -9,7 +9,7 @@ export default class ErrorAlert extends React.Component {
             messages: props.messages,
             visible: props.messages.length > 0,
             showAllMessages: false
-        }
+        };
     }
 
     componentWillReceiveProps(props){
