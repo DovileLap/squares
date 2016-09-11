@@ -60,15 +60,17 @@ class SquaresViz extends React.Component {
 		let xValue = function(d) { return d.x; };
 		let xScale = d3.scaleLinear().range([0, width]);
 		let xMap = function(d) { return xScale(xValue(d));};
-		//let xAxis = d3.axisBottom().scale(xScale);
-		xScale.domain([d3.min(pointsData, xValue)-1, d3.max(pointsData, xValue)+1]);
 
 		// setup y
 		let yValue = function(d) { return d.y;}; 
 		let yScale = d3.scaleLinear().range([height, 0]);
 		let yMap = function(d) { return yScale(yValue(d));};
-		//let yAxis = d3.axisLeft().scale(yScale);
-		yScale.domain([d3.min(pointsData, yValue)-1, d3.max(pointsData, yValue)+1]);
+
+
+		let minCoord = Math.min(d3.min(pointsData, xValue)-1, d3.min(pointsData, yValue)-1);
+		let maxCoord = Math.max(d3.max(pointsData, xValue)+1, d3.max(pointsData, yValue)+1);
+		xScale.domain([minCoord, maxCoord]);
+		yScale.domain([minCoord, maxCoord]);
 
 
 		svg.attr("width", width + margin.left + margin.right)
