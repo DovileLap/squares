@@ -4,19 +4,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-var JsonDB = require('node-json-db');
-var DataError = require("node-json-db/lib/Errors").DataError;
-var db = new JsonDB("squaresDB", true, false);
+let JsonDB = require('node-json-db');
+let DataError = require("node-json-db/lib/Errors").DataError;
+let db = new JsonDB("squaresDB", true, false);
 
 app.use(bodyParser.json({limit: '1mb'}));
 
-var args = process.argv.slice(2);
-var dev = process.env.NODE_ENV != 'production';
+let args = process.argv.slice(2);
+let dev = process.env.NODE_ENV != 'production';
 
 // Init DB 
 
 let data = db.getData('/');
-if (data.set == undefined) {
+if (data.set === undefined) {
     db.push('/set', {});
 }
 
