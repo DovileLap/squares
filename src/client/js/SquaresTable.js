@@ -24,13 +24,11 @@ export default class SquaresTable extends React.Component {
         return (
             <BootstrapTable 
                 data={data} 
-                remote 
                 keyField="id" 
                 striped  
                 hover 
                 pagination 
-                options={options} 
-                fetchInfo={ { dataTotalSize: this.props.squares.length } }>
+                options={options}>
               <TableHeaderColumn dataField="pt1" dataSort>Point 1</TableHeaderColumn>
               <TableHeaderColumn dataField="pt2" dataSort>Point 2</TableHeaderColumn>
               <TableHeaderColumn dataField="pt3" dataSort>Point 3</TableHeaderColumn>

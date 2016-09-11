@@ -11,7 +11,7 @@ let db = new JsonDB("squaresDB", true, false);
 app.use(bodyParser.json({limit: '1mb'}));
 
 let args = process.argv.slice(2);
-let dev = process.env.NODE_ENV != 'production';
+let dev = process.env.NODE_ENV == 'dev';
 
 // Init DB 
 
