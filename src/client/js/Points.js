@@ -4,6 +4,7 @@ import PointTable from './PointTable';
 import PointsImport from './PointsImport';
 import Squares from './Squares';
 import Sets from './Sets';
+import SetsAPI from './SetsAPI';
 import ErrorAlert from './ErrorAlert';
 
 import { validateCoord } from './validators'
@@ -192,7 +193,8 @@ class Points extends React.Component {
 						<Sets getPoints={ this.getPoints.bind(this) }
 							  onSaveSet={ this.onSaveSet.bind(this) }
 							  onDeleteSet={ this.onDeleteSet.bind(this) }
-							  onLoadSet={ this.onLoadSet.bind(this)}
+							  onLoadSet={ this.onLoadSet.bind(this)} 
+							  SetsAPI = { new SetsAPI() }
 								/>
 					</Col>
 				</Row>

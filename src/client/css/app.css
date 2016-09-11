@@ -36,13 +36,17 @@ body .react-spinner_bar {
 	height: 36px;
 }
 
-.points-save-form {
+.sets-save-form {
 	float: right;
 }
 
-.points-save-form .form-control,
-.points-save-form .btn-group{
-	margin-left: 10px;
+.sets-save-form .form-control {
+	margin-right: 3px;
+}
+
+
+.sets-save-form .btn-group{
+	margin-left: 25px;
 	margin-right: 10px;
 }
 

@@ -11,33 +11,30 @@ class Sets extends React.Component {
 		super(props);
 		this.state = {
 			name: '',
-			disabled: false,
-			saveBtnLabel: 'Save',
-			loadBtnLabel: 'Load',
-			deleteBtnLabel: 'Delete',
-			sets: [] 
+			action: null,
+			sets: [],
+			savedSets: [] 
 		}
 		this.loadSets();
 	}
 
-	loadSets() {
-		$.ajax({
-			url: '/sets',
-			context: this,
-			success: function(data){
-				this.setState({
-					sets: data
-				});
-			}
+	onLoadSets(sets) {
+		this.setState({
+			sets: sets.slice(),
+			savedSets: sets.slice()
 		});
 	}
 
+	loadSets() {
+		this.props.SetsAPI.loadSets(
+			{	
+				success: this.onLoadSets.bind(this)
+			}
+		);
+	}
+
 	handleNameChange(e) {
-		if (e.target.value == "add_new_set") {
-			this.dialog.open();
-		} else {
-			this.setState({ name: e.target.value })
-		}	
+		this.setState({ name: e.target.value });
 	}
 
 	validateNewName(name) {
@@ -54,7 +51,7 @@ class Sets extends React.Component {
 	}
 
 	createNewName(name) {
-		if (this.validateNewName(name).valid) {
+		if (name.length > 0 && this.validateNewName(name).valid) {
 			let sets = this.state.sets;
 			sets.push(name);
 			this.setState({
@@ -67,105 +64,118 @@ class Sets extends React.Component {
 	handleSubmit(e) {
 		let self = this;
 		e.preventDefault();
-		console.log('saving...')
+		if (this.state.name.length == 0) return;
+
 		this.setState({
-			disabled: true,
-			saveBtnLabel: 'Saving...'
+			action: 'saving'
 		});
 		this.save();
 	}
 
-	resetButtons() {
+	reset() {
 		this.setState({
-			disabled: false,
-			saveBtnLabel: 'Save',
-			loadBtnLabel: 'Load',
-			deleteBtnLabel: 'Delete'
+			action: null
 		});
+	}
+
+	onSave() {
+		this.props.onSaveSet(this.state.name);
+		this.loadSets();
 	}
 
 	save(callback) {
-		$.ajax({
-			url: '/set/'+this.state.name,
-			method: 'POST',
-			contentType: "application/json",
-			context: this,
-			data: JSON.stringify({ 'points': this.props.getPoints() }),
-			success: function() {
-				this.props.onSaveSet(this.state.name);
-			},
-			complete: this.resetButtons
-		});
+		this.props.SetsAPI.saveSet(
+			this.state.name, 
+			this.props.getPoints(),
+			{
+				success: this.onSave.bind(this),
+				complete: this.reset.bind(this)
+			}
+		)
+	}
+
+	onDelete() {
+		this.props.onDeleteSet(this.state.name);
+		this.loadSets();
 	}
 	
 	delete() {
+		if (this.state.name.length == 0) return;
 		this.setState({
-			disabled: true,
-			deleteBtnLabel: 'Deleting...'
+			action: 'deleting'
 		});
-		$.ajax({
-			url: '/set/' + this.state.name,
-			method: 'DELETE',
-			context: this,
-			success: function(data){
-				this.props.onDeleteSet(this.state.name);
-				this.loadSets();
-			},
-			complete: this.resetButtons
-		});
+		this.props.SetsAPI.deleteSet(this.state.name, 
+			{
+				success: this.onDelete.bind(this),
+				complete: this.reset.bind(this)
+			}
+		);
+	}
+
+	onLoad(points) {
+		this.props.onLoadSet(this.state.name, points);
 	}
 
 	load() {
+		if (this.state.name.length == 0) return;
 		this.setState({
-			disabled: true,
-			loadBtnLabel: 'Loading...'
+			action: 'loading'
 		});
-		$.ajax({
-			url: '/set/' + this.state.name,
-			context: this,
-			success: function(data){
-				this.props.onLoadSet(this.state.name, data);
-			},
-			complete: this.resetButtons
-		});
+		this.props.SetsAPI.loadSet(this.state.name,
+			{
+				success: this.onLoad.bind(this),
+				complete: this.reset.bind(this)
+			}
+		)
+	}
+
+	openDialog() {
+		this.dialog.open();
 	}
 
 	render() {
 		let options = this.state.sets.map(function(opt) {
 			return ( <option key={ opt } 
 							 value= { opt }> 
-							 { opt } 
-					 </option> );
+							 { opt } { this.state.savedSets.indexOf(opt) < 0? '(not saved)': '' }
+					 </option> ); 
 		}, this);
 		options.unshift( ( <option key=""></option>) );
-		options.push( ( <option key="add_new_set" value="add_new_set">New...</option> ) );
+
+		let disableButtons = !!this.state.action || this.state.name.length == 0;
+		let disableDelete = this.state.savedSets.indexOf(this.state.name) < 0;
+		let disableLoad = disableDelete;
 
 		return (
-			<form class="points-save-form form-inline" onSubmit={ this.handleSubmit.bind(this) }>
+			<form class="sets-save-form form-inline" onSubmit={ this.handleSubmit.bind(this) }>
 				<select type="select" 
 						class="form-control"
 						value={ this.state.name }
 						onChange={ this.handleNameChange.bind(this) }>
 					{ options }
-				</select>	
+				</select>
+				<Button bsStyle="success" 
+						onClick= { this.openDialog.bind(this) }>
+						<i class="glyphicon glyphicon-plus"></i>
+				</Button>	
 				<div class="btn-group">
-					<Button disabled={this.state.disabled} 
+					<Button disabled={ disableButtons} 
 							bsStyle="primary" 
 							type="submit" > 
 						<span class="glyphicon glyphicon-floppy-disk"></span>
-					    &nbsp;{ this.state.saveBtnLabel }
+					    &nbsp;{ this.state.action == 'saving'? 'Saving...': 'Save' }
 					</Button>
 					<Button bsStyle="success"
-							disabled={this.state.disabled}
+							disabled={ disableButtons || disableLoad}
 							onClick={ this.load.bind(this) }>
 						<i class="glyphicon glyphicon-download"></i>
-						&nbsp;{ this.state.loadBtnLabel }
+						&nbsp;{ this.state.action == 'loading'? 'Loading...': 'Load' }
 					</Button>
 					<Button bsStyle="warning"
-							disabled={this.state.disabled} 
+							disabled={ disableButtons || disableDelete} 
 							onClick={ this.delete.bind(this) }>
 						<i class="glyphicon glyphicon-trash"></i>
-						&nbsp;{ this.state.deleteBtnLabel }
+						&nbsp;{ this.state.action == 'deleting'? 'Deleting...': 'Delete' }
 					</Button>
 				</div>
 				<SetDialog id="set-dialog" 
