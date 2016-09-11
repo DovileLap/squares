@@ -9,8 +9,9 @@ var DataError = require("node-json-db/lib/Errors").DataError;
 var db = new JsonDB("squaresDB", true, false);
 
 app.use(bodyParser.json({limit: '1mb'}));
-app.use(express.static(__dirname + '/static'));
 
+var args = process.argv.slice(2);
+var dev = args[0] == 'dev';
 
 // Init DB 
 
@@ -20,10 +21,17 @@ if (data.set == undefined) {
 }
 
 
+app.use('/static', express.static(__dirname + '/static'));
+
 //Routes
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname+'/index.html');
+    if (dev) {
+        res.sendFile(__dirname+'/indexDev.html');
+    } else {
+        res.sendFile(__dirname+'/index.html');
+    }
+    
 })
 
 app.get('/sets', function(req, res) {

@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "start": "node src/server/server.js",
+    "build": "webpack --output-public-path /static/",
+    "start": "node src/server.js",
     "start-webpack-dev": "node_modules/.bin/webpack-dev-server --progress --inline",
-    "start-node-dev": "node_modules/.bin/nodemon src/server.js"
+    "start-node-dev": "node_modules/.bin/nodemon src/server.js dev"
   },
   "author": "Dovile Lapinskaite",
   "license": "ISC",
