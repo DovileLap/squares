@@ -87,15 +87,27 @@ class PointTable extends React.Component {
 	    });
 	}
 
-	onDeleteRow(rowids) {
+	onDeleteRows(rowids) {
+		// Multiple selected
 		if (Array.isArray(rowids)) {
 			rowids.map(function(id) {
-				this.props.onDeleteRow(id);
+				this.deleteRow(id);
 			}, this);
+
+		//single selected
 		} else {
-			this.props.onDeleteRow(rowids);
+			this.deleteRow(rowids);
 		}
 		this.resetPage();
+	}
+
+	deleteRow(id) {
+		let point = this.state.points.find(function(point) {
+			return point.id == id;
+		})
+		if (point) {
+			this.props.onDeleteRow(point);
+		}
 	}
 
 	onAddRow(row) {
@@ -112,7 +124,7 @@ class PointTable extends React.Component {
 			sizePerPageList: [5, 10, 20, 50],
 			sizePerPage: this.state.sizePerPage,
 			page: this.state.currentPage,
-			onDeleteRow: this.onDeleteRow.bind(this),
+			onDeleteRow: this.onDeleteRows.bind(this),
 			onAddRow: this.onAddRow.bind(this),
 			onPageChange: this.onPageChange.bind(this),
 			onSizePerPageList: this.onSizePerPageList.bind(this),

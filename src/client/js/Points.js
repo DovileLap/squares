@@ -92,20 +92,6 @@ class Points extends React.Component {
 		})
 	}
 
-	deleteById(id) {
-		console.log('deleting ' + id);
-		let idx = this.points.findIndex(function(point) {
-			return point.id == id;
-		})
-		if (idx == -1) {
-			throw "Unknown point: " + point;
-		}
-		this.points.splice(idx, 1);
-		this.setState({
-			points: this.points
-		});
-	}
-
 	deletePoint(point) {
 		console.log('deleting ' + point);
 		let idx = this.points.indexOf(point);
@@ -200,7 +186,7 @@ class Points extends React.Component {
 				</Row>
 				<Row>
 					<Col md={6} sm={6} xs={12}>
-						<PointTable onDeleteRow={this.deleteById.bind(this)} 
+						<PointTable onDeleteRow={this.deletePoint.bind(this)} 
 									onAddRow={this.onAddPoint.bind(this)}
 									points={ this.state.points }
 									clearAll={this.clearAll.bind(this) } 
