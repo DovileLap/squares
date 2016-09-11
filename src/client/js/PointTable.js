@@ -96,8 +96,10 @@ export default class PointTable extends React.Component {
     }
 
     deleteRow(id) {
-        const page = this.getPage();
-        const point = page[id];
+        const split = id.split(" ");
+        const point = this.props.points.find(function(point) {
+            return point.x == parseInt(split[0]) && point.y == parseInt(split[1]);
+        });
         if (point) {
             this.props.onDeleteRow(point);
         }
@@ -115,8 +117,8 @@ export default class PointTable extends React.Component {
 
     render() {
         let points = this.getPage();
-        points.forEach(function(point, id) {
-            point.id = id;
+        points.forEach(function(point) {
+            point.id = point.x + " " + point.y;
         });
 
         var options = {
