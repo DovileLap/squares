@@ -4,7 +4,7 @@ import PointTable from './PointTable';
 import PointsImport from './PointsImport';
 import Squares from './Squares';
 import Sets from './Sets';
-
+import ErrorAlert from './ErrorAlert';
 
 import { validateCoord } from './validators'
 
@@ -18,7 +18,8 @@ class Points extends React.Component {
 		}, this);
 		this.state = {
 			points: this.points,
-			name: ''
+			name: '',
+			messages: []
 		};
 
 	}
@@ -42,7 +43,7 @@ class Points extends React.Component {
 		if (validation.valid) {
 			this.points.push(this.newPoint(point.x, point.y));
 		} else {
-			console.log(validation.msg);
+			console.error('Attempted to add invalid point: ' + validation.msg);
 		}
 	}
 
@@ -54,6 +55,7 @@ class Points extends React.Component {
 	}
 
 	addPoints(points) {
+		this.resetMessages();
 		points.map(function(point){
 			this._addPoint(point);
 		}, this);
@@ -122,6 +124,15 @@ class Points extends React.Component {
 		});
 	}
 
+	onAddPoint(point) {
+		let validation = this.validatePoint(point);
+		if (validation.valid) {
+			this.addPoint(point);
+		} else {
+			this.addMessage(validation.msg);
+		}
+	}
+
 	onDeleteSet(name) {
 		if (this.state.name == name) {
 			this.clearAll();
@@ -145,6 +156,20 @@ class Points extends React.Component {
 		this.addPoints(points);
 	}
 
+	handleMessages(messages) {
+		this.setState({ messages: messages });
+	}
+
+	resetMessages() {
+		this.setState({ messages: [] });
+	}
+
+	addMessage(message) {
+		let messages = this.state.messages.slice();
+		messages.push(message);
+		this.setState({ messages: messages });
+	}
+
 	render() {
 		let setname = "New set";
 		if (this.state.name) {
@@ -160,7 +185,8 @@ class Points extends React.Component {
 						    Clear all Points
 						</Button>
 						<PointsImport addPoints={ this.addPoints.bind(this) }
-								  validator={ this.validatePoint.bind(this) }  />
+								  validator={ this.validatePoint.bind(this) } 
+								  handleMessages={ this.handleMessages.bind(this) } />
 					</Col>
 					<Col md={6} sm={6} xs={12}>
 						<Sets getPoints={ this.getPoints.bind(this) }
@@ -171,6 +197,11 @@ class Points extends React.Component {
 					</Col>
 				</Row>
 				<Row>
+					<Col  md={12} sm={12} xs={12}>
+						<ErrorAlert messages={ this.state.messages }/>
+					</Col>
+				</Row>
+				<Row>
 					<Col md={12} sm={12} xs={12}>
 						<h2 class="">{ setname }</h2>
 					</Col>
@@ -178,7 +209,7 @@ class Points extends React.Component {
 				<Row>
 					<Col md={6} sm={6} xs={12}>
 						<PointTable onDeleteRow={this.deleteById.bind(this)} 
-									onAddRow={this.addPoint.bind(this)} 
+									onAddRow={this.onAddPoint.bind(this)}
 									{ ...this.state } />
 					</Col>
 					<Col md={6} sm={6} xs={12}>

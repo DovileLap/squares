@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDom from 'react-dom';
 import jQuery from 'jquery';
 import 'bootstrap'; // react-bootstrap-table needs a separate import
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -44,6 +45,14 @@ class PointTable extends React.Component {
 	    	points: props.points
 	   	});
 	   	this.resetPage();
+	}
+
+	componentDidMount() {
+	    let el = ReactDom.findDOMNode(this);
+	    // Change bootstrap classes on table toolbar
+	    jQuery(el).find('.react-bs-table-tool-bar > div > div:first-child')
+	    	.attr('class', 'col-xs-12 col-sm-12 col-md-12 col-lg-12');
+
 	}
 
 	onPageChange(page, sizePerPage) {

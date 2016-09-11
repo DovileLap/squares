@@ -62,3 +62,12 @@ body .react-spinner_bar {
 	stroke-width: 4px;
 	z-index:5;
 }
+
+.error-alert {
+	margin-top: 10px;
+}
+
+.error-alert-more {
+	cursor: pointer;
+	color: inherit;
+}
