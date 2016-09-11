@@ -11,7 +11,7 @@ var db = new JsonDB("squaresDB", true, false);
 app.use(bodyParser.json({limit: '1mb'}));
 
 var args = process.argv.slice(2);
-var dev = args[0] == 'dev';
+var dev = process.env.NODE_ENV != 'production';
 
 // Init DB 
 
@@ -31,7 +31,6 @@ app.get('/', function(req, res) {
     } else {
         res.sendFile(__dirname+'/index.html');
     }
-    
 })
 
 app.get('/sets', function(req, res) {
